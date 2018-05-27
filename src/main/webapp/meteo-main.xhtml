@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Log de temperatures</title>	
+</h:head>
+<h:body>
+	<h3></h3>
+	<h:form>
+		 <p:remoteCommand name="onload" update="mainPanel" action="#{meteoBean.actualitzaDades}" autoRun="true" />
+			 
+		<h:panelGrid id="mainPanel" columns="2">
+		
+			<p:panel>
+				<f:facet name="header">
+					<h:outputText value="Panell meteorològic" />
+				</f:facet>
+				<h:panelGrid columns="4">
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Temperatura actual" />
+						</f:facet>
+						<h:outputText value="#{meteoBean.dadesMeteo.temperatura} ºC" />
+					</p:panel>
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Pressió Actual" />							
+						</f:facet>
+						<h:outputText value="#{meteoBean.dadesMeteo.pressio} mbar" />
+					</p:panel>
+					<p:panel id="tempMaxima">
+						<f:facet name="header">
+							<h:outputText value="Temperatura Màxima" />							
+						</f:facet>					
+						<h:outputText value="#{meteoBean.temperaturaMaxima} ºC" />
+					</p:panel>
+					<p:panel id="tempMinima">
+						<f:facet name="header">
+							<h:outputText value="Temperatura Mínima" />							
+						</f:facet>
+						<h:outputText value="#{meteoBean.temperaturaMinima} ºC" />
+						
+					</p:panel>
+					
+				</h:panelGrid>
+				<h:panelGrid columns="4">
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Data inici:" />
+						</f:facet>
+						<p:calendar id="datetimeFrom" value="#{meteoBean.dateFrom}"
+							pattern="dd/MM/yyyy HH:mm" autocomplete="true">
+							<p:ajax event="dateSelect" listener="#{meteoBean.actualitzaGrafica}" update="display,tempMaxima,tempMinima"/>
+						</p:calendar>
+					</p:panel>
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Data fi:" />
+						</f:facet>
+						<p:calendar id="datetimeTo" value="#{meteoBean.dateTo}"
+							pattern="dd/MM/yyyy HH:mm" autocomplete="true" >
+							<p:ajax event="dateSelect" listener="#{meteoBean.actualitzaGrafica}" update="display,tempMaxima,tempMinima"/>
+						</p:calendar>
+					</p:panel>
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Lloc" />
+						</f:facet>
+						<p:selectOneMenu value="#{meteoBean.location}">
+							<f:selectItem itemValue="S1" itemLabel="Habitacio 1" />
+							<f:selectItem itemValue="S2" itemLabel="Habitacio 2" />
+							<f:selectItem itemValue="S3" itemLabel="Habitacio 3" />
+							<p:ajax listener="#{meteoBean.actualitzaGrafica}" update="display,tempMaxima,tempMinima"/>
+						</p:selectOneMenu>
+					</p:panel>
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="Mesura" />
+						</f:facet>
+						<p:selectOneMenu value="#{meteoBean.mesura}">
+							<f:selectItem itemValue="0" itemLabel="Temperatura" />
+							<f:selectItem itemValue="1" itemLabel="Pressió" />
+							<p:ajax listener="#{meteoBean.actualitzaGrafica}" update="display"/>
+						</p:selectOneMenu>
+					</p:panel>
+					
+				</h:panelGrid>
+				
+				
+				<p:panel id="display">			
+					<p:chart type="line" model="#{meteoBean.dateModel}"  />
+				</p:panel>
+				
+				
+			</p:panel>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

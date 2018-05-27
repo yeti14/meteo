@@ -1,0 +1,4 @@
+cat\meteo\utils\ConversorTest.class
+cat\meteo\service\MeteoServiceTest.class
+cat\meteo\ws\client\MeteoPiRestClientTest.class
+cat\meteo\service\MeteoServiceTest$ContextConfiguration.class
